@@ -8,7 +8,6 @@ RUN apt-get update && apt-get upgrade -y && apt-get install --yes zip unzip
 
 #instala as extensões do mongo
 RUN pecl install mongodb && \
-#docker-php-ext-enable mongodb && \
 docker-php-ext-enable mongodb
 #libcurl4-openssl-dev pkg-config libssl-dev
 
@@ -30,6 +29,7 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-install -j$(nproc) gd \
     && docker-php-ext-install zip
 
+
 # Adiciono o volume
 VOLUME [ "/var/www/html" ]
 
@@ -48,17 +48,5 @@ RUN yes | pecl install xdebug-2.7.2 \
 
     RUN sed -i "s/MaxKeepAliveRequests 100/MaxKeepAliveRequests 600/" /etc/apache2/apache2.conf \
     && sed -i "s/KeepAliveTimeout 5/KeepAliveTimeout 3/" /etc/apache2/apache2.conf
-
-RUN chown -R www-data:www-data /var/www
-
-USER root
-
-COPY app.entrypoint.sh /usr/local/bin/
-RUN chmod 0755 /usr/local/bin/app.entrypoint.sh
-
-WORKDIR /var/www
-
-ENTRYPOINT ["app.entrypoint.sh"]
-CMD ["apache2-foreground"]
 
 #EXPOSE 80
