@@ -6,9 +6,11 @@ RUN curl -sS https://getcomposer.org/installer -o composer-setup.php && \
 
 RUN apt-get update && apt-get upgrade -y && apt-get install --yes zip unzip
 
+RUN docker-php-ext-install bcmath
+
 #instala as extensões do mongo
 RUN pecl install mongodb && \
-docker-php-ext-enable mongodb
+    docker-php-ext-enable mongodb
 #libcurl4-openssl-dev pkg-config libssl-dev
 
 # Instala as extensões do mysql e mysqli
@@ -21,9 +23,9 @@ RUN apt-get update && \
     apt-get -y install libxml2-dev libzip-dev git
 
 RUN apt-get update && apt-get install -y \
-        libfreetype6-dev \
-        libjpeg62-turbo-dev \
-        libpng-dev \
+    libfreetype6-dev \
+    libjpeg62-turbo-dev \
+    libpng-dev \
     && docker-php-ext-install -j$(nproc) iconv \
     && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
     && docker-php-ext-install -j$(nproc) gd \
@@ -46,7 +48,7 @@ RUN yes | pecl install xdebug-2.7.2 \
     && echo "xdebug.remote_enable=on" >> /usr/local/etc/php/conf.d/xdebug.ini \
     && echo "xdebug.remote_autostart=off" >> /usr/local/etc/php/conf.d/xdebug.ini
 
-    RUN sed -i "s/MaxKeepAliveRequests 100/MaxKeepAliveRequests 600/" /etc/apache2/apache2.conf \
+RUN sed -i "s/MaxKeepAliveRequests 100/MaxKeepAliveRequests 600/" /etc/apache2/apache2.conf \
     && sed -i "s/KeepAliveTimeout 5/KeepAliveTimeout 3/" /etc/apache2/apache2.conf
 
 #EXPOSE 80
