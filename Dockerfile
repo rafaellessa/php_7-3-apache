@@ -16,6 +16,10 @@ RUN pecl install mongodb && \
 # Instala as extensões do mysql e mysqli
 RUN docker-php-ext-install pdo_mysql mysqli
 
+# Instala o MySQL client
+RUN apt-get update && apt-get install -y default-mysql-client
+
+
 # Instala as extensoes do php
 RUN apt-get update && \
     apt-get -y install apt-utils curl && \
