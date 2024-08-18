@@ -1,4 +1,4 @@
-FROM php:7.3.3-apache
+FROM php:7.4-apache
 
 # Instala o composer
 RUN curl -sS https://getcomposer.org/installer -o composer-setup.php && \
